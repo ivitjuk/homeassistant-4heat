@@ -43,6 +43,7 @@ class FourHeatDataUpdateCoordinator(DataUpdateCoordinator):
         self._next_update = 0
         self.model = "Basic"
         self.serial_number = "1"
+        self.last_successful_data = None
         update_interval = timedelta(seconds=60)
 
         super().__init__(
@@ -61,16 +62,17 @@ class FourHeatDataUpdateCoordinator(DataUpdateCoordinator):
                 s.connect((self._host, TCP_PORT))
                 s.send(query)
                 result = s.recv(SOCKET_BUFFER).decode()
-                s.close()
+                
                 result = result.replace("[","")
                 result = result.replace("]","")
                 result = result.replace('"',"")
                 d = result.split(",")
-            except Exception as error:
-                _LOGGER.error(f"Update error: {error}")
-                self._next_update = 5
-                d = []
-            return d
+
+                return d
+            finally:
+                try:
+                    s.close()
+                except: pass
 
         def _update_data() -> dict:
             """Fetch data from 4heat via sync functions."""
@@ -88,11 +90,22 @@ class FourHeatDataUpdateCoordinator(DataUpdateCoordinator):
             return dict
 
         try:
-            async with timeout(10):
+            async with timeout(SOCKET_TIMEOUT + 5):
                 d = await self.hass.async_add_executor_job(_update_data)
+                self.last_successful_data = d
+                
                 return d
+        except socket.timeout as error:
+            _LOGGER.error(f"Socket timeout: {error}")
+            self._next_update = 5
+            return self.last_successful_data
+        except socket.error as error:
+            _LOGGER.error(f"Socket error: {error}")
+            self._next_update = 5
+            raise UpdateFailed(f"Failed to connect: {error}") from error
         except Exception as error:
-            raise UpdateFailed(f"Invalid response from API: {error}") from error
+            self._next_update = 5
+            raise UpdateFailed(f"Unexpected error: {error}") from error
 
     async def async_turn_on(self) -> bool:
         try:
