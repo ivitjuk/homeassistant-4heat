@@ -87,6 +87,8 @@ SENSOR_TYPES = {
     "21700": ["Room termostat", TEMP_CELSIUS, ""],
     "40016": ["Outputs", None, ""],
     "50001": ["Auger on", None, ""],
+    "20005": ["Min Range of Boiler Thermostat", None, ""],
+    "20006": ["Max Range of Boiler Thermostat", None, ""],
 }
 
 MODE_NAMES = {
