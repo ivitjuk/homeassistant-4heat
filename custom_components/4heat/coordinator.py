@@ -10,8 +10,8 @@ from homeassistant.helpers.typing import HomeAssistantType
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
 from .const import (
-    DOMAIN, SOCKET_BUFFER, SOCKET_TIMEOUT, TCP_PORT, DATA_QUERY, ERROR_QUERY,
-    RESULT_ERROR, CONF_MODE, MODES, MODE_TYPE, ERROR_TYPE
+    DOMAIN, SOCKET_BUFFER, SOCKET_TIMEOUT, SOCKET_TIMEOUT_RETRIES, TCP_PORT, DATA_QUERY,
+    ERROR_QUERY, RESULT_ERROR, CONF_MODE, MODES, MODE_TYPE, ERROR_TYPE
 )
 
 _LOGGER = logging.getLogger(__name__)
@@ -44,6 +44,7 @@ class FourHeatDataUpdateCoordinator(DataUpdateCoordinator):
         self.model = "Basic"
         self.serial_number = "1"
         self.last_successful_data = None
+        self.timeout_count = 0
         update_interval = timedelta(seconds=60)
 
         super().__init__(
@@ -93,11 +94,22 @@ class FourHeatDataUpdateCoordinator(DataUpdateCoordinator):
             async with timeout(SOCKET_TIMEOUT + 5):
                 d = await self.hass.async_add_executor_job(_update_data)
                 self.last_successful_data = d
+                self.timeout_count = 0
                 
                 return d
         except socket.timeout as error:
             _LOGGER.error(f"Socket timeout: {error}")
             self._next_update = 5
+
+            if self.last_successful_data is None:
+                return None
+            
+            if self.timeout_count < SOCKET_TIMEOUT_RETRIES:
+                self.timeout_count += 1
+            else:
+                _LOGGER.error(f"Socket timeouted {SOCKET_TIMEOUT_RETRIES} times in a row")
+                self.last_successful_data = None
+            
             return self.last_successful_data
         except socket.error as error:
             _LOGGER.error(f"Socket error: {error}")
