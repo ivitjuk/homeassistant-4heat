@@ -80,6 +80,7 @@ SENSOR_TYPES = {
     "20366": ["UN 20366", None, ""],
     "20369": ["UN 20369", None, ""],
     "20374": ["UN 20374", None, ""],
+    "20385": ["UN 20385", None, ""],
     "20375": ["UN 20375", None, ""],
     "20575": ["UN 20575", None, ""],
     "20493": ["Room temperature set point", TEMP_CELSIUS, ""],
