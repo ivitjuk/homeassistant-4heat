@@ -44,6 +44,8 @@ MODE_TYPE = "30001"
 ERROR_TYPE = "30002"
 POWER_TYPE = "20364"
 
+UNIT_NR = "Nr"
+
 SENSOR_TYPES = {
     "30001": ["State", None, ""],
     "30002": ["Error", None, ""],
@@ -60,11 +62,11 @@ SENSOR_TYPES = {
     "30017": ["Boiler water", TEMP_CELSIUS, ""],
     "30020": ["Water pressure", PRESSURE_MBAR, ""],
     "30025": ["Comb.FanRealSpeed", None, ""],
-    "30026": ["UN 30026", TEMP_CELSIUS, ""],
+    "30026": ["Air flow", UNIT_NR, ""],
     "30033": ["Exhaust depression", PRESSURE_PA, ""],
     "30040": ["UN 30040", None, ""],
     "30044": ["UN 30044", None, ""],
-    "30084": ["UN 30084", None, ""],
+    "30084": ["Water pump", None, ""],
     "40007": ["UN 40007", None, ""],
     "20180": ["Boiler target", TEMP_CELSIUS, ""],
     "20199": ["Boiler target", TEMP_CELSIUS, ""],
