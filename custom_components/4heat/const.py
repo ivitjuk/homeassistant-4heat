@@ -42,7 +42,7 @@ MIN_TIME_BETWEEN_UPDATES = timedelta(seconds=20)
 
 MODE_TYPE = "30001"
 ERROR_TYPE = "30002"
-POWER_TYPE = "20364"
+POWER_TYPE = "20810"
 
 UNIT_NR = "Nr"
 
@@ -74,7 +74,7 @@ SENSOR_TYPES = {
     "20206": ["UN 20206", None, ""],
     "20211": ["UN 20211", None, ""],
     "20225": ["UN 20225", None, ""],
-    "20364": ["Power Setting", None, ""],
+    "20364": ["UN 20364", None, ""],
     "20381": ["UN 20381", None, ""],
     "20365": ["UN 20365", None, ""],
     "20366": ["UN 20366", None, ""],
@@ -87,6 +87,7 @@ SENSOR_TYPES = {
     "20570": ["UN 20570", None, ""],
     "20801": ["Heating power", None, ""],
     "20803": ["UN 20803", None, ""],
+    "20810": ["Power Setting", None, ""],
     "20813": ["UN 20813", None, ""],
     "21700": ["Room termostat", TEMP_CELSIUS, ""],
     "40016": ["Outputs", None, ""],
@@ -143,6 +144,5 @@ POWER_NAMES = {
     3: "P3",
     4: "P4",
     5: "P5",
-    6: "P6",
-    7: "Auto",
+    6: "Auto",
 }
