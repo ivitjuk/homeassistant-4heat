@@ -24,6 +24,7 @@ class FourHeatDataUpdateCoordinator(DataUpdateCoordinator):
         """Initialize global 4heat data updater."""
         self._host = config[CONF_HOST]
         self._mode = False
+        self._update_is_active = False
         self.swiches = [MODE_TYPE]
         self.stove_id = id
         
@@ -91,15 +92,22 @@ class FourHeatDataUpdateCoordinator(DataUpdateCoordinator):
             return dict
 
         try:
-            async with timeout(SOCKET_TIMEOUT + 5):
-                d = await self.hass.async_add_executor_job(_update_data)
-                self.last_successful_data = d
-                self.timeout_count = 0
-                
-                return d
+            if self._update_is_active:
+                _LOGGER.warning(f"Returning stale data while waiting for an active update to finish")
+                return self.last_successful_data
+            else:
+                async with timeout(SOCKET_TIMEOUT + 5):
+                    self._update_is_active = True
+                    d = await self.hass.async_add_executor_job(_update_data)
+                    self.last_successful_data = d
+                    self.timeout_count = 0
+                    self._update_is_active = False
+
+                    return d
         except socket.timeout as error:
             _LOGGER.error(f"Socket timeout: {error}")
             self._next_update = 5
+            self._update_is_active = False
 
             if self.last_successful_data is None:
                 return None
@@ -114,9 +122,11 @@ class FourHeatDataUpdateCoordinator(DataUpdateCoordinator):
         except socket.error as error:
             _LOGGER.error(f"Socket error: {error}")
             self._next_update = 5
+            self._update_is_active = False
             raise UpdateFailed(f"Failed to connect: {error}") from error
         except Exception as error:
             self._next_update = 5
+            self._update_is_active = False
             raise UpdateFailed(f"Unexpected error: {error}") from error
 
     async def async_turn_on(self) -> bool:
