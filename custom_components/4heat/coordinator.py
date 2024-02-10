@@ -96,8 +96,8 @@ class FourHeatDataUpdateCoordinator(DataUpdateCoordinator):
                 _LOGGER.warning(f"Returning stale data while waiting for an active update to finish")
                 return self.last_successful_data
             else:
+                self._update_is_active = True
                 async with timeout(SOCKET_TIMEOUT + 5):
-                    self._update_is_active = True
                     d = await self.hass.async_add_executor_job(_update_data)
                     self.last_successful_data = d
                     self.timeout_count = 0
