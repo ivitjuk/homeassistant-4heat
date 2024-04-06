@@ -1,7 +1,7 @@
 """Constants for the 4Heat integration."""
 from datetime import timedelta
 
-from homeassistant.const import UnitOfTemperature
+from homeassistant.const import UnitOfTemperature, UnitOfPressure
 
 DOMAIN = "4heat"
 
