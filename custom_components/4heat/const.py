@@ -1,11 +1,7 @@
 """Constants for the 4Heat integration."""
 from datetime import timedelta
 
-from homeassistant.const import (
-    TEMP_CELSIUS,
-    PRESSURE_PA,
-    PRESSURE_MBAR,
-)
+from homeassistant.const import UnitOfTemperature
 
 DOMAIN = "4heat"
 
@@ -51,25 +47,25 @@ SENSOR_TYPES = {
     "30002": ["Error", None, ""],
     "30003": ["Timer", None, ""],
     "30004": ["Ignition", None, ""],
-    "30005": ["Exhaust temperature", TEMP_CELSIUS, ""],
-    "30006": ["Room temperature", TEMP_CELSIUS, ""],
+    "30005": ["Exhaust temperature", UnitOfTemperature.CELSIUS, ""],
+    "30006": ["Room temperature", UnitOfTemperature.CELSIUS, ""],
     "30007": ["Inputs", None, ""],
     "30008": ["Combustion fan", None, ""], #RPM
     "30009": ["Heating fan", None, ""],
     "30011": ["Combustion power", None, ""],
-    "30012": ["Puffer temperature", TEMP_CELSIUS, ""],
+    "30012": ["Puffer temperature", UnitOfTemperature.CELSIUS, ""],
     "30015": ["UN 30015", None, ""],
-    "30017": ["Boiler water", TEMP_CELSIUS, ""],
-    "30020": ["Water pressure", PRESSURE_MBAR, ""],
+    "30017": ["Boiler water", UnitOfTemperature.CELSIUS, ""],
+    "30020": ["Water pressure", UnitOfPressure.MBAR, ""],
     "30025": ["Comb.FanRealSpeed", None, ""],
     "30026": ["Air flow", UNIT_NR, ""],
-    "30033": ["Exhaust depression", PRESSURE_PA, ""],
+    "30033": ["Exhaust depression", UnitOfPressure.PA, ""],
     "30040": ["UN 30040", None, ""],
     "30044": ["UN 30044", None, ""],
     "30084": ["Water pump", None, ""],
     "40007": ["UN 40007", None, ""],
-    "20180": ["Boiler target", TEMP_CELSIUS, ""],
-    "20199": ["Boiler target", TEMP_CELSIUS, ""],
+    "20180": ["Boiler target", UnitOfTemperature.CELSIUS, ""],
+    "20199": ["Boiler target", UnitOfTemperature.CELSIUS, ""],
     "20205": ["UN 20205", None, ""],
     "20206": ["UN 20206", None, ""],
     "20211": ["UN 20211", None, ""],
@@ -83,13 +79,13 @@ SENSOR_TYPES = {
     "20385": ["UN 20385", None, ""],
     "20375": ["UN 20375", None, ""],
     "20575": ["UN 20575", None, ""],
-    "20493": ["Room temperature set point", TEMP_CELSIUS, ""],
+    "20493": ["Room temperature set point", UnitOfTemperature.CELSIUS, ""],
     "20570": ["UN 20570", None, ""],
     "20801": ["Heating power", None, ""],
     "20803": ["UN 20803", None, ""],
     "20810": ["Power Setting", None, ""],
     "20813": ["UN 20813", None, ""],
-    "21700": ["Room termostat", TEMP_CELSIUS, ""],
+    "21700": ["Room termostat", UnitOfTemperature.CELSIUS, ""],
     "40016": ["Outputs", None, ""],
     "50001": ["Auger on", None, ""],
     "20005": ["Min Range of Boiler Thermostat", None, ""],
