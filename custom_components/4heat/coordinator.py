@@ -6,7 +6,7 @@ import socket
 from async_timeout import timeout
 from homeassistant.util.dt import utcnow
 from homeassistant.const import CONF_HOST
-from homeassistant.helpers.typing import HomeAssistantType
+from homeassistant.core import HomeAssistant
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
 from .const import (
@@ -20,7 +20,7 @@ _LOGGER = logging.getLogger(__name__)
 class FourHeatDataUpdateCoordinator(DataUpdateCoordinator):
     """Class to manage fetching 4heat data."""
 
-    def __init__(self, hass: HomeAssistantType, *, config: dict, options: dict, id: str):
+    def __init__(self, hass: HomeAssistant, *, config: dict, options: dict, id: str):
         """Initialize global 4heat data updater."""
         self._host = config[CONF_HOST]
         self._mode = False

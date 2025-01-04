@@ -12,7 +12,7 @@ from homeassistant.const import (
 import homeassistant.helpers.config_validation as cv
 
 from homeassistant.exceptions import ConfigEntryNotReady
-from homeassistant.helpers.typing import HomeAssistantType
+from homeassistant.core import HomeAssistant
 
 from .const import ATTR_MARKER, ATTR_READING_ID, ATTR_STOVE_ID, DOMAIN, DATA_COORDINATOR, CONF_MODE
 from .coordinator import FourHeatDataUpdateCoordinator
@@ -50,7 +50,7 @@ async def async_setup(hass, config):
 
 
 
-async def async_setup_entry(hass: HomeAssistantType, entry: ConfigEntry):
+async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
     """Load the saved entities."""
     coordinator = FourHeatDataUpdateCoordinator(
         hass,
