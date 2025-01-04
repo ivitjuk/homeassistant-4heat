@@ -2,6 +2,7 @@
 import voluptuous as vol
 import logging
 
+from homeassistant.const import Platform
 from homeassistant.config_entries import SOURCE_IMPORT, ConfigEntry
 from homeassistant.core import valid_entity_id
 from homeassistant.const import (
@@ -96,10 +97,6 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
     
     hass.services.async_register(DOMAIN, "set_value", async_handle_set_value)
 
-    hass.async_create_task(
-        hass.config_entries.async_forward_entry_setup(entry, "sensor")
-    )
-    hass.async_create_task(
-        hass.config_entries.async_forward_entry_setup(entry, "switch")
-    )
+    await hass.config_entries.async_forward_entry_setups(entry, [Platform.SENSOR, Platform.SWITCH])
+
     return True
